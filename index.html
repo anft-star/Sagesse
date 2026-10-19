@@ -50,6 +50,9 @@ li div{display:flex;justify-content:space-between;align-items:center;gap:8px;fon
 li b{color:var(--ink)}
 li button{padding:6px 10px;font-size:13px}
 .empty{color:var(--mute)}
+.src{margin:4px 0 0 20px;font-size:13px;color:var(--mute)}
+li .src{margin:2px 0 0;display:inline-block}
+.filters .wide{grid-column:1/-1}
 footer{margin-top:34px;text-align:center;color:var(--mute);font-size:13px}
 </style>
 </head>
@@ -60,6 +63,7 @@ footer{margin-top:34px;text-align:center;color:var(--mute);font-size:13px}
 <section class="hero" aria-live="polite">
   <blockquote id="q">…</blockquote>
   <p class="who"><span id="a"></span> <span class="era" id="e"></span></p>
+  <p class="src" id="src"></p>
   <div class="actions">
     <button id="next" type="button">Autre citation</button>
     <button class="alt" id="fav" type="button" aria-pressed="false">Garder</button>
@@ -71,12 +75,13 @@ footer{margin-top:34px;text-align:center;color:var(--mute);font-size:13px}
   <input id="s" type="search" placeholder="Chercher un mot ou un nom…" aria-label="Rechercher">
   <select id="au" aria-label="Philosophe"><option value="">Tous les philosophes</option></select>
   <button class="alt" id="onlyFav" type="button" aria-pressed="false">Mes favorites</button>
+  <button class="alt wide" id="onlySure" type="button" aria-pressed="false">Citations sûres seulement</button>
 </section>
 <p class="count" id="count"></p>
 <ul id="list"></ul>
 <p class="empty" id="empty" hidden>Aucune citation ne correspond. Essaie un autre mot.</p>
 
-<footer>© 2026 RAKOTOARISOANIRINA Anjara Fitahiana<br>Citations traduites ou résumées en français. Vérifie les sources avant de citer.</footer>
+<footer>© 2026 RAKOTOARISOANIRINA Anjara Fitahiana<br>Citations traduites ou résumées en français. « ⚠ attribution incertaine » signale une citation dont l’auteur n’est pas confirmé : vérifie la source avant de citer.</footer>
 </main>
 
 <script>
@@ -180,7 +185,174 @@ var Q=[
 ["Bergson","XXe s.","Le rire a besoin d’un écho."],
 ["Santayana","XXe s.","Ceux qui ne se souviennent pas du passé sont condamnés à le répéter."],
 ["Whitehead","XXe s.","Toute la philosophie occidentale n’est guère qu’une suite de notes en bas de page de Platon."],
-["Wittgenstein","XXe s.","Ce dont on ne peut parler, il faut le taire."]
+["Wittgenstein","XXe s.","Ce dont on ne peut parler, il faut le taire."],
+["Confucius","VIe–Ve s. av. J.-C.","L’homme de bien exige tout de lui-même ; l’homme médiocre exige tout des autres.","Entretiens (attribution traditionnelle)",1],
+["Confucius","VIe–Ve s. av. J.-C.","Quand tu vois un homme de valeur, cherche à lui ressembler ; quand tu vois un homme sans valeur, examine-toi toi-même.","Entretiens, IV, 17"],
+["Confucius","VIe–Ve s. av. J.-C.","Le sage rougit de ses paroles lorsque ses actes ne les suivent pas.","Entretiens, XIV, 27"],
+["Confucius","VIe–Ve s. av. J.-C.","Connaître ce que l’on sait et reconnaître ce que l’on ne sait pas, voilà la véritable connaissance.","Entretiens, II, 17"],
+["Pythagore","VIe s. av. J.-C.","Le commencement est la moitié de toute action.","",1],
+["Héraclite","vers 500 av. J.-C.","Le caractère d’un homme est son destin.","Fragment DK 22 B119"],
+["Aristote","IVe s. av. J.-C.","L’ami de tous n’est l’ami de personne.","",1],
+["Épicure","IVe–IIIe s. av. J.-C.","Le plaisir est le commencement et la fin de la vie heureuse.","Lettre à Ménécée, § 128"],
+["Aristote","IVe s. av. J.-C.","La nature ne fait rien en vain.","Œuvres biologiques et philosophiques"],
+["Socrate","Ve s. av. J.-C.","Le commencement de la sagesse est la définition des termes.","",1],
+["Bhagavad-Gîtâ","Ier millénaire av. J.-C.","Tu as droit à l’action, mais jamais à ses fruits.","Chapitre 2, verset 47"],
+["Bhagavad-Gîtâ","Ier millénaire av. J.-C.","Lorsque la droiture décline et que l’injustice s’élève, je me manifeste.","Chapitre 4, verset 7"],
+["Bouddha","VIe–Ve s. av. J.-C.","La paix vient de l’intérieur. Ne la cherche pas à l’extérieur.","",1],
+["Bouddha","VIe–Ve s. av. J.-C.","Tout ce qui est composé est voué à la disparition.","Mahāparinibbāna Sutta (DN 16)"],
+["Épicure","IIIe s. av. J.-C.","Tant que nous sommes, la mort n’est pas présente ; lorsque la mort est présente, nous ne sommes plus.","Diogène Laërce, X, 125"],
+["Sénèque","Ier s.","Hâte-toi de bien vivre et songe que chaque jour est à lui seul une vie.","Lettres à Lucilius (formulation adaptée)",1],
+["Virgile","Ier s. av. J.-C.","La fortune favorise les audacieux.","Énéide, X, 284"],
+["Horace","Ier s. av. J.-C.","Il est doux et honorable de mourir pour sa patrie.","Odes, III, 2"],
+["Térence","IIe s. av. J.-C.","Je suis homme, et rien de ce qui est humain ne m’est étranger.","Heautontimoroumenos, v. 77"],
+["Horace","Ier s. av. J.-C.","Pendant que nous parlons, le temps jaloux s’enfuit.","Odes, I, 11"],
+["Anonyme","Antiquité","Le visage est le miroir de l’âme.","",1],
+["Tradition soufie","Moyen Âge","Celui qui se connaît lui-même connaît son Seigneur.","",1],
+["Tradition islamique","Moyen Âge","La connaissance est une lumière que Dieu place dans le cœur.","",1],
+["Rûmî","XIIIe s.","Tu n’es pas une goutte dans l’océan ; tu es l’océan tout entier dans une goutte.","",1],
+["Rûmî","XIIIe s.","La blessure est l’endroit par lequel la lumière entre en toi.","",1],
+["Proverbe arabe","Tradition orale","Le savoir est un trésor qui suit son propriétaire partout.",""],
+["Augustin","IVe–Ve s.","La mesure de l’amour est d’aimer sans mesure.","",1],
+["Anselme de Cantorbéry","XIe s.","Je crois afin de comprendre.","Proslogion, chap. 1"],
+["Anonyme","Moyen Âge","L’ignorance de l’ignorance est la maladie de l’ignorant.","",1],
+["Proverbe latin","Tradition ancienne","La vérité est fille du temps.","Veritas filia temporis",1],
+["Proverbe","Tradition orale","Celui qui ne progresse pas recule.",""],
+["Shakespeare","vers 1600","Être ou ne pas être, telle est la question.","Hamlet, III, 1"],
+["Shakespeare","vers 1611","Nous sommes faits de la même étoffe que les rêves.","La Tempête, IV, 1"],
+["Sartre","XXe s.","L’enfer, c’est les autres.","Huis clos, 1944"],
+["Voltaire","XVIIIe s.","Le mieux est l’ennemi du bien.","La Bégueule, 1772"],
+["Benjamin Franklin","XVIIIe s.","Le temps, c’est de l’argent.","Advice to a Young Tradesman, 1748"],
+["Pascal","XVIIe s.","La coutume est une seconde nature qui détruit la première.","Pensées"],
+["Victor Hugo","XIXe s.","Rien n’est plus puissant qu’une idée dont l’heure est venue.","",1],
+["Victor Hugo","XIXe s.","La liberté commence où l’ignorance finit.","",1],
+["Camus","XXe s.","Il n’y a qu’un problème philosophique vraiment sérieux : c’est le suicide.","Le Mythe de Sisyphe, 1942"],
+["Nietzsche","XIXe s.","L’homme est quelque chose qui doit être dépassé.","Ainsi parlait Zarathoustra"],
+["Baudelaire","XIXe s.","Le beau est toujours bizarre.","Exposition universelle de 1855"],
+["Baudelaire","XIXe s.","Là, tout n’est qu’ordre et beauté, luxe, calme et volupté.","L’Invitation au voyage, 1857"],
+["Victor Hugo","XIXe s.","Demain, dès l’aube, à l’heure où blanchit la campagne, je partirai.","Les Contemplations, 1856"],
+["La Fontaine","XVIIe s.","Il faut, autant qu’on peut, obliger tout le monde.","Le Lion et le Rat, II, 11"],
+["La Fontaine","XVIIe s.","On a souvent besoin d’un plus petit que soi.","Le Lion et le Rat, II, 11"],
+["La Fontaine","XVIIe s.","Rien ne sert de courir ; il faut partir à point.","Le Lièvre et la Tortue, VI, 10"],
+["La Fontaine","XVIIe s.","Patience et longueur de temps font plus que force ni que rage.","Le Lion et le Rat, II, 11"],
+["La Fontaine","XVIIe s.","Tout flatteur vit aux dépens de celui qui l’écoute.","Le Corbeau et le Renard, I, 2"],
+["La Fontaine","XVIIe s.","La raison du plus fort est toujours la meilleure.","Le Loup et l’Agneau, I, 10"],
+["Beaumarchais","XVIIIe s.","Je me presse de rire de tout, de peur d’être obligé d’en pleurer.","Le Barbier de Séville, I, 2"],
+["Oscar Wilde","XIXe s.","L’expérience est le nom que chacun donne à ses erreurs.","L’Éventail de Lady Windermere, 1892"],
+["Oscar Wilde","XIXe s.","La vérité est rarement pure et jamais simple.","L’Importance d’être Constant, 1895"],
+["Oscar Wilde","XIXe s.","Le seul moyen de se débarrasser d’une tentation, c’est d’y céder.","Le Portrait de Dorian Gray, 1891"],
+["Nietzsche","XIXe s.","Il n’existe pas de faits, seulement des interprétations.","Fragment posthume, 1886–1887"],
+["Anonyme","Tradition orale","La vie est une lutte.",""],
+["Boris Pasternak","XXe s.","L’homme est né pour vivre, non pour se préparer à vivre.","",1],
+["Léonard de Vinci","Renaissance","La simplicité est la sophistication suprême.","",1],
+["Einstein","XXe s.","L’imagination est plus importante que le savoir.","Saturday Evening Post, 1929"],
+["Proverbe africain","Tradition orale","Si tu veux aller vite, marche seul ; si tu veux aller loin, marchons ensemble.","",1],
+["Proverbe africain","Tradition orale","Il faut tout un village pour élever un enfant.","",1],
+["Proverbe africain","Tradition orale","Quand les racines sont profondes, il n’y a aucune raison de craindre le vent.","",1],
+["Proverbe africain","Tradition orale","La pluie ne tombe pas sur un seul toit.","",1],
+["Proverbe africain","Tradition orale","Celui qui pose des questions ne se perd pas.","",1],
+["Proverbe africain","Tradition orale","Le soleil ne se couche jamais sans avoir apporté une nouvelle.","",1],
+["Proverbe africain","Tradition orale","Un vieillard assis voit plus loin qu’un jeune homme debout.","",1],
+["Proverbe africain","Tradition orale","La sagesse est comme un baobab : une seule personne ne peut l’embrasser.","",1],
+["Proverbe","Tradition orale","Celui qui a été mordu par un serpent craint une corde.",""],
+["Proverbe africain","Tradition orale","La parole est comme un œuf : une fois tombé, il ne peut être ramassé intact.","",1],
+["Martin Luther King","XXe s.","J’ai un rêve.","Discours, 28 août 1963"],
+["Franklin D. Roosevelt","XXe s.","La seule chose que nous ayons à craindre est la peur elle-même.","Discours d’investiture, 1933"],
+["Neil Armstrong","XXe s.","Un petit pas pour un homme, un bond de géant pour l’humanité.","20 juillet 1969"],
+["Nelson Mandela","XXe–XXIe s.","L’éducation est l’arme la plus puissante pour changer le monde.","Discours, 2003"],
+["Anonyme","XXe s.","La paix n’est pas simplement l’absence de guerre.",""],
+["Martin Luther King","XXe s.","L’injustice quelque part est une menace pour la justice partout.","Lettre de la prison de Birmingham, 1963"],
+["Anonyme","Époque contemporaine","Dans un monde où tu peux être tout, sois bon.","",1],
+["A. Philip Randolph","XXe s.","La liberté n’est jamais donnée ; elle se gagne.","",1],
+["Winston Churchill","XXe s.","L’histoire sera bonne envers moi, car j’ai l’intention de l’écrire.","",1],
+["Déclaration des droits de l’homme","1789","La liberté consiste à pouvoir faire tout ce qui ne nuit pas à autrui.","Article 4"],
+["Proverbe","Tradition orale","Les apparences sont trompeuses.",""],
+["Proverbe français","XVIIe s.","Il ne faut pas vendre la peau de l’ours avant de l’avoir tué.","Cf. La Fontaine, L’Ours et les deux Compagnons"],
+["Bible","Antiquité","Qui sème le vent récolte la tempête.","Osée 8, 7"],
+["Proverbe français","Tradition orale","Petit à petit, l’oiseau fait son nid.",""],
+["Proverbe français","Tradition orale","Après la pluie, le beau temps.",""],
+["Proverbe français","Tradition orale","Il n’est jamais trop tard pour bien faire.",""],
+["Proverbe","Tradition orale","L’habit ne fait pas le moine.",""],
+["Proverbe français","Tradition orale","Les petits ruisseaux font les grandes rivières.",""],
+["Proverbe","Tradition orale","Mieux vaut prévenir que guérir.",""],
+["Proverbe","Tradition orale","Qui ne risque rien n’a rien.",""],
+["Proverbe","Tradition orale","L’union fait la force.","Devise de la Belgique"],
+["Proverbe","Tradition orale","Le silence est d’or.",""],
+["Proverbe","Tradition orale","Il n’y a pas de fumée sans feu.",""],
+["Proverbe français","Tradition orale","À quelque chose malheur est bon.",""],
+["Proverbe","Tradition orale","Les murs ont des oreilles.",""],
+["Proverbe français","Tradition orale","Qui va lentement va sûrement.",""],
+["Jacques Cœur (devise)","Moyen Âge","À cœur vaillant, rien d’impossible.","Devise historique"],
+["Racine","XVIIe s.","Qui veut voyager loin ménage sa monture.","Les Plaideurs, III, 3 (1668)"],
+["Proverbe français","Tradition orale","Il faut battre le fer pendant qu’il est chaud.",""],
+["Louis XIV","XVIIe s.","L’État, c’est moi.","",1],
+["Louis XV","XVIIIe s.","Après moi, le déluge.","",1],
+["Richelieu","XVIIe s.","Qu’on me donne six lignes écrites de la main du plus honnête homme, j’y trouverai de quoi le faire pendre.","",1],
+["Evelyn Beatrice Hall","1906","Je ne suis pas d’accord avec ce que vous dites, mais je défendrai jusqu’à la mort votre droit de le dire.","The Friends of Voltaire (souvent attribuée à tort à Voltaire)"],
+["Napoléon Bonaparte","XIXe s.","L’histoire est un mensonge convenu.","",1],
+["George Washington Carver","XXe s.","L’éducation est la clé qui ouvre la porte dorée de la liberté.","",1],
+["Richard Steele","XVIIIe s.","La lecture est à l’esprit ce que l’exercice est au corps.","The Tatler, 1710"],
+["Victor Hugo","XIXe s.","Celui qui ouvre une porte d’école ferme une prison.","",1],
+["Malcolm Forbes","XXe s.","Le but de l’éducation est de remplacer un esprit vide par un esprit ouvert.","",1],
+["Gandhi","XXe s.","Apprends comme si tu devais vivre toujours ; vis comme si tu devais mourir demain.","",1],
+["Anonyme","Époque contemporaine","Le savoir est la seule richesse que l’on peut distribuer sans s’appauvrir.",""],
+["Victor Hugo","XIXe s.","Les livres sont des amis froids mais sûrs.","",1],
+["Anonyme","Époque contemporaine","Lire, c’est voyager sans bouger.",""],
+["Hegel","XIXe s.","Rien de grand ne s’est accompli dans le monde sans passion.","Leçons sur la philosophie de l’histoire"],
+["Nelson Mandela","XXe s.","Le courage n’est pas l’absence de peur, mais la capacité de la vaincre.","",1],
+["Proverbe","Tradition orale","Celui qui déplace une montagne commence par déplacer de petites pierres.","",1],
+["Henry Ford","XXe s.","L’échec est simplement l’occasion de recommencer, cette fois plus intelligemment.","",1],
+["Robert Collier","XXe s.","Le succès est la somme de petits efforts, répétés jour après jour.","",1],
+["Saint-Exupéry","XXe s.","Fais de ta vie un rêve, et d’un rêve une réalité.","",1],
+["Saint-Exupéry","XXe s.","On ne voit bien qu’avec le cœur.","Le Petit Prince, chap. XXI, 1943"],
+["Saint-Exupéry","XXe s.","L’essentiel est invisible pour les yeux.","Le Petit Prince, chap. XXI, 1943"],
+["Saint-Exupéry","XXe s.","Toutes les grandes personnes ont d’abord été des enfants.","Le Petit Prince, dédicace, 1943"],
+["Camus","XXe s.","Il faut imaginer Sisyphe heureux.","Le Mythe de Sisyphe, 1942"],
+["Sartre","XXe s.","L’homme est condamné à être libre.","L’existentialisme est un humanisme, 1945–1946"],
+["Camus","XXe s.","Aujourd’hui, maman est morte.","L’Étranger, 1942"],
+["Proust","XXe s.","Longtemps, je me suis couché de bonne heure.","Du côté de chez Swann, 1913"],
+["Proverbe","Tradition orale","Les gens heureux n’ont pas d’histoire.",""],
+["Orwell","XXe s.","Tous les animaux sont égaux, mais certains sont plus égaux que d’autres.","La Ferme des animaux, chap. X, 1945"],
+["Zora Neale Hurston","XXe s.","Il y a des années qui posent des questions et des années qui répondent.","",1],
+["Dostoïevski","XIXe s.","La beauté sauvera le monde.","L’Idiot, 1868–1869 (formulation et contexte discutés)"],
+["Tolstoï","XIXe s.","Chacun pense à changer le monde, mais personne ne pense à se changer lui-même.","",1],
+["Dante","XIVe s.","Il n’est pas de plus grande douleur que de se souvenir des jours heureux dans la misère.","La Divine Comédie, Enfer, chant V"],
+["Lavoisier","XVIIIe s.","Rien ne se perd, rien ne se crée, tout se transforme.","Formule populaire condensée de son principe de conservation de la matière",1],
+["Newton","XVIIe s.","La vérité se trouve dans la simplicité, et non dans la multiplicité et la confusion des choses.","",1],
+["Newton","XVIIe s.","Si j’ai vu plus loin, c’est en me tenant sur les épaules de géants.","Lettre à Robert Hooke, 1675–1676"],
+["Anonyme","Époque contemporaine","La curiosité est le moteur de la réussite.",""],
+["Proverbe latin","Antiquité","L’erreur est humaine.","Errare humanum est"],
+["Einstein","XXe s.","La mesure de l’intelligence est la capacité de changer.","",1],
+["Napoléon Bonaparte","XIXe s.","L’imagination gouverne le monde.","",1],
+["Albert Szent-Györgyi","XXe s.","La découverte consiste à voir ce que tout le monde a vu et à penser ce que personne n’a pensé.","",1],
+["Saint-Exupéry","XXe s.","La perfection est atteinte non quand il ne reste rien à ajouter, mais quand il ne reste rien à enlever.","Terre des hommes, 1939"],
+["Saint-Exupéry","XXe s.","Aimer, ce n’est pas se regarder l’un l’autre, c’est regarder ensemble dans la même direction.","Terre des hommes, 1939"],
+["Khalil Gibran","XXe s.","L’amitié est toujours une douce responsabilité, jamais une opportunité.","",1],
+["Emerson","XIXe s.","Un ami est une personne avec laquelle je peux être sincère.","",1],
+["Shakespeare","vers 1595","L’amour ne voit pas avec les yeux, mais avec l’esprit.","Le Songe d’une nuit d’été, I, 1"],
+["Anonyme","Époque contemporaine","Les blessures que l’on ne voit pas sont souvent les plus difficiles à guérir.",""],
+["Anonyme","Tradition spirituelle","Le véritable amour commence là où l’on n’attend plus rien en retour.","",1],
+["Bacon","XVIIe s.","L’amitié double les joies et réduit de moitié les peines.","Essais, « De l’amitié », 1625 (formulation condensée)"],
+["Christopher McCandless","XXe s.","Le bonheur n’est réel que lorsqu’il est partagé.","Cité dans Into the Wild (Jon Krakauer, 1996)"],
+["George Sand","XIXe s.","Il n’y a qu’un bonheur dans la vie, c’est d’aimer et d’être aimé.","",1],
+["Berlioz","XIXe s.","Le temps est un grand maître ; le malheur, c’est qu’il tue ses élèves.","",1],
+["Faulkner","XXe s.","Le passé n’est jamais mort. Il n’est même pas passé.","Requiem for a Nun, 1951"],
+["Proverbe","Tradition orale","Le temps révèle tout.",""],
+["Héraclite","vers 500 av. J.-C.","Il n’y a rien de permanent, sauf le changement.","Paraphrase de sa philosophie",1],
+["Proverbe","Tradition orale","Le temps perdu ne se retrouve jamais.",""],
+["Pascal","XVIIe s.","Nous ne nous tenons jamais au temps présent.","Pensées (divertissement)"],
+["Cicéron","Ier s. av. J.-C.","La mémoire est le trésor et le gardien de toutes choses.","",1],
+["Sénèque","Ier s.","Le destin conduit celui qui consent et entraîne celui qui résiste.","Lettres à Lucilius, 107 (maxime de Cléanthe)"],
+["Aristote","IVe s. av. J.-C.","Le bonheur dépend de nous-mêmes.","Éthique à Nicomaque (résumé)",1],
+["Bible","Ier s.","La vérité vous rendra libres.","Jean 8, 32"],
+["Bible","Ier s.","Tu reconnaîtras l’arbre à ses fruits.","Matthieu 7, 16–20"],
+["Bible","Ier s.","Demandez, et l’on vous donnera ; cherchez, et vous trouverez.","Matthieu 7, 7"],
+["Bible","Ier s.","Ne jugez pas, afin de ne pas être jugés.","Matthieu 7, 1"],
+["Bible","Ier s.","Que celui qui n’a jamais péché lui jette la première pierre.","Jean 7, 53 – 8, 11 (passage absent des plus anciens manuscrits)"],
+["Bible","Ier s.","La foi sans les œuvres est morte.","Jacques 2, 26"],
+["Bible","vers 53–55","L’amour est patient, l’amour est serviable.","1 Corinthiens 13, 4"],
+["Bible","Antiquité","Tout a son temps.","Ecclésiaste 3, 1"],
+["Bible","Antiquité","La douceur de la réponse détourne la fureur.","Proverbes 15, 1"],
+["Bible","Antiquité","Le fer aiguise le fer, et l’homme aiguise le visage de son prochain.","Proverbes 27, 17"]
 ];
 // ---- Application ---------------------------------------------------------
 var $=function(i){return document.getElementById(i)};
@@ -188,11 +360,13 @@ var favs={};
 try{favs=JSON.parse(localStorage.getItem("sagesse-favs")||"{}")||{}}catch(e){favs={}}
 function saveFavs(){try{localStorage.setItem("sagesse-favs",JSON.stringify(favs))}catch(e){}}
 var key=function(i){return Q[i][0]+"|"+Q[i][2].slice(0,30)};
-var cur=Math.floor(Date.now()/864e5)%Q.length, onlyFav=false;
+var sure=[];Q.forEach(function(c,i){if(!c[4])sure.push(i)});
+var cur=sure[Math.floor(Date.now()/864e5)%sure.length], onlyFav=false, onlySure=false;
+function note(c){var t=[];if(c[3])t.push("Source : "+c[3]);if(c[4])t.push("⚠ attribution incertaine");return t.join(" · ")}
 
 function show(i){
   cur=i;var c=Q[i];
-  $("q").textContent="« "+c[2]+" »";$("a").textContent=c[0];$("e").textContent=c[1];
+  $("q").textContent="« "+c[2]+" »";$("a").textContent=c[0];$("e").textContent=c[1];$("src").textContent=note(c);
   $("fav").setAttribute("aria-pressed",!!favs[key(i)]);
   $("fav").textContent=favs[key(i)]?"Gardée":"Garder";
 }
@@ -206,12 +380,14 @@ function renderList(){
   Q.forEach(function(c,i){
     if(a&&c[0]!==a)return;
     if(onlyFav&&!favs[key(i)])return;
+    if(onlySure&&c[4])return;
     if(t&&(c[0]+" "+c[2]).toLowerCase().indexOf(t)<0)return;
     n++;
     var li=document.createElement("li"),p=document.createElement("p"),d=document.createElement("div"),
         s=document.createElement("span"),b=document.createElement("b"),bt=document.createElement("button");
     p.textContent="« "+c[2]+" »";
     b.textContent=c[0];s.appendChild(b);s.appendChild(document.createTextNode(" · "+c[1]));
+    var nt=note(c);if(nt){var sm=document.createElement("small");sm.className="src";sm.textContent=nt;s.appendChild(document.createElement("br"));s.appendChild(sm)}
     bt.className="alt";bt.type="button";bt.textContent=favs[key(i)]?"Gardée":"Garder";
     bt.setAttribute("aria-pressed",!!favs[key(i)]);
     bt.onclick=function(){toggleFav(i)};
@@ -226,7 +402,7 @@ var names=[];Q.forEach(function(c){if(names.indexOf(c[0])<0)names.push(c[0])});
 names.sort(function(x,y){return x.localeCompare(y,"fr")}).forEach(function(n){
   var o=document.createElement("option");o.value=n;o.textContent=n;$("au").appendChild(o)});
 
-$("next").onclick=function(){var i;do{i=Math.floor(Math.random()*Q.length)}while(i===cur&&Q.length>1);show(i)};
+$("next").onclick=function(){var i;do{i=sure[Math.floor(Math.random()*sure.length)]}while(i===cur&&sure.length>1);show(i)};
 $("fav").onclick=function(){toggleFav(cur)};
 $("copy").onclick=function(){
   var c=Q[cur],txt="« "+c[2]+" » – "+c[0];
@@ -235,6 +411,7 @@ $("copy").onclick=function(){
 };
 $("s").oninput=renderList;$("au").onchange=renderList;
 $("onlyFav").onclick=function(){onlyFav=!onlyFav;this.setAttribute("aria-pressed",onlyFav);renderList()};
+$("onlySure").onclick=function(){onlySure=!onlySure;this.setAttribute("aria-pressed",onlySure);renderList()};
 $("theme").onclick=function(){
   var r=document.documentElement,dark=r.getAttribute("data-theme")==="dark"||(!r.getAttribute("data-theme")&&matchMedia("(prefers-color-scheme:dark)").matches);
   r.setAttribute("data-theme",dark?"light":"dark");
