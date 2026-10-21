@@ -1,6 +1,6 @@
 // Sagesse – © RAKOTOARISOANIRINA Anjara Fitahiana
 // Change VERSION à chaque mise à jour de l’app pour forcer le rafraîchissement.
-var VERSION = "sagesse-v4";
+var VERSION = "sagesse-v5";
 var FILES = ["./", "./index.html", "./manifest.json", "./icon-192.png", "./icon-512.png"];
 
 self.addEventListener("install", function (e) {
